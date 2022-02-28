@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -24,12 +25,19 @@ scene.add(ambientLight);
 const lightHelper = new THREE.PointLightHelper(light);
 scene.add(lightHelper);
 
+const gridHelper = new THREE.GridHelper();
+scene.add(gridHelper);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+
 function animate() {
     requestAnimationFrame(animate);
 
     octahedron.rotation.x += 0.01;
     octahedron.rotation.y += 0.01;
     octahedron.rotation.z += 0.01;
+
+    controls.update();
 
     renderer.render(scene, camera);
 };
