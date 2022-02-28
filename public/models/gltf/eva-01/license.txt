@@ -1,0 +1,11 @@
+Model Information:
+* title:	EVA-01
+* source:	https://sketchfab.com/3d-models/eva-01-5be173cb71c24a93827fb3fd1de593ea
+* author:	AngryBearr (https://sketchfab.com/AngryBearr)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "EVA-01" (https://sketchfab.com/3d-models/eva-01-5be173cb71c24a93827fb3fd1de593ea) by AngryBearr (https://sketchfab.com/AngryBearr) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
