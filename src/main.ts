@@ -1,3 +1,4 @@
+import '@picocss/pico/css/pico.min.css';
 import './style.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -5,22 +6,39 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Object3D } from 'three';
 
 const HELPER = false;
-let toLoad = 0;
-let loaded = 0;
+
+const renderer = new THREE.WebGLRenderer();
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+window.addEventListener('resize', onWindowResize);
+
+const updateProgress = function (item: string, loaded: number, total: number) {
+    var span = document.querySelector('span') as HTMLSpanElement;
+    if (span) {
+        span.innerHTML = `(${loaded}/${total}) ${item}`;
+    }
+
+    var progress = document.querySelector('progress') as HTMLProgressElement;
+    if (progress) {
+        progress.value = loaded;
+        progress.max = total;
+    }
+}
+var manager = new THREE.LoadingManager();
+manager.onStart = updateProgress;
+manager.onProgress = updateProgress;
+manager.onLoad = function () {
+    document.querySelector('main')?.remove();
+    window.document.body.appendChild(renderer.domElement);
+};
+
+const loader = new GLTFLoader(manager);
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.x = 10;
 camera.position.y = 10;
 camera.position.z = 20;
-
-const renderer = new THREE.WebGLRenderer();
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
-window.document.body.appendChild(renderer.domElement);
-window.addEventListener('resize', onWindowResize);
-
-const loader = new GLTFLoader()
 
 if (HELPER) scene.add(new THREE.GridHelper(100, 100));
 
@@ -88,18 +106,15 @@ function addOctahedron() {
 }
 
 function addTokyo() {
-    toLoad++;
     loader.setPath('models/gltf/tokyo_station_a/');
     loader.load('scene.gltf', function ({ scene: tokyo }) {
         tokyo.translateY(-57);
         tokyo.rotateY(Math.PI);
         scene.add(tokyo);
-        loaded++;
     });
 }
 
 function addEva() {
-    toLoad++;
     loader.setPath('models/gltf/eva-01/');
     loader.load('scene.gltf', function ({ scene: eva }) {
         eva.scale.set(0.01, 0.01, 0.01);
@@ -108,7 +123,6 @@ function addEva() {
         eva.translateZ(0);
         eva.rotateX(5 / 180 * Math.PI);
         scene.add(eva);
-        loaded++;
     });
 }
 
@@ -125,8 +139,6 @@ function addControls() {
 
 function animate() {
     requestAnimationFrame(animate);
-
-    if (loaded < toLoad) return;
 
     octahedron.rotation.y += 0.005;
 
