@@ -12,6 +12,7 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 window.document.body.appendChild(renderer.domElement);
+window.addEventListener('resize', onWindowResize);
 
 const loader = new GLTFLoader()
 
@@ -98,3 +99,10 @@ function animate() {
 
     renderer.render(scene, camera);
 };
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
